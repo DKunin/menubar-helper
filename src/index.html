@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <style type="text/css">
+    body { padding: 0 10px 5px; font-family: Helvetica, Arial, sans-serif; font-size: 14px; }
+    #port { width: 40px; margin: 0 5px; }
+    </style>
+</head>
+<body>
+
+    <p>Submit to restart on the new port</p>
+
+    <form onsubmit="onSubmit(event)">
+        <label for="port">Port</label>
+        <input id="port" placeholder="port"/>
+        <input type="submit" value="Submit"/>
+    </form>
+
+<script>
+    var remote = require('electron').remote;
+    var port = document.getElementById('port');
+
+    function onSubmit(e) {
+        var config = remote.getGlobal('config');
+
+        if (config.port != port.value) {
+            config.port = port.value;
+            config.sync(port.value);
+        }
+
+        e.preventDefault();
+    }
+
+    port.focus();
+    port.value = remote.getGlobal('config').port;
+</script>
+
+</body>
+</html>
