@@ -87,7 +87,7 @@ app.on('ready', function() {
     win.loadURL('file://' + __dirname + '/index.html');
 
     // appIcon = new Tray(iconPath.inactive);
-    appIcon = new Tray();
+    appIcon = new Tray(path.resolve(__dirname, '../icon.png'));
 
     startServer();
 
