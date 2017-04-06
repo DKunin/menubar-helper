@@ -28,7 +28,7 @@ let contextMenu = null;
 function startServer() {
     server = fork(path.resolve(__dirname, './launch.js'));
     server.send(`launch ${port} ${editorPath}`);
-
+    console.log(`launch ${port} ${editorPath}`);
     // if (appIcon) {
     //     appIcon.setImage(iconPath.active);
     // }
@@ -81,16 +81,17 @@ app.on('ready', function() {
         show: false,
         width: 250,
         height: 200,
-        closable: true,
+        closable: false,
         minimizable: false,
         resizable: false,
-        vibrancy: 'dark',
+        // vibrancy: 'dark',
         fullscreenable: false
     });
     win.setPosition(900, 25);
     win.loadURL('file://' + __dirname + '/index.html');
 
     // appIcon = new Tray(iconPath.inactive);
+    console.log(path.resolve(__dirname, '../icon.png'));
     appIcon = new Tray(path.resolve(__dirname, '../icon.png'));
 
     startServer();
@@ -134,7 +135,7 @@ app.on('ready', function() {
 });
 
 app.on('window-all-closed', function() {
-    // if (appIcon) {
-    //     appIcon.destroy();
-    // }
+    if (appIcon) {
+        appIcon.destroy();
+    }
 });

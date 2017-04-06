@@ -1,10 +1,5 @@
 'use strict';
 
-const execa = require('execa');
-
-execa.shell('/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl'.replace(/\s/g, '\\ ') + ' .')
-    .then(result => {
-        console.log(result.stdout);
-    }).catch(error => {
-        console.log(error);
-    });
+const serverObject = require('./server');
+serverObject.app.listen(7288);
+serverObject.updatePath('/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl');
