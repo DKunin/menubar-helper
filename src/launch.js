@@ -1,15 +1,14 @@
 'use strict';
 
-const app = require('./server');
+const serverObject = require('./server');
 let server;
 
 process.on('message', message => {
-    let [command, port] = message.split(' ');
+    let [command, port, editorPath] = message.split(' ');
 
-    // eslint-disable-next-line
-    console.log(message);
     if (command === 'launch') {
-        server = app.listen(port);
+        server = serverObject.app.listen(port);
+        serverObject.updatePath(editorPath);
     }
     if (command === 'kill') {
         server.close();

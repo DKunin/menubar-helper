@@ -2,31 +2,32 @@
 
 const DEFAULT_PORT = 7288;
 
-var path = require('path');
-var electron = require('electron');
-var app = electron.app;
-var Menu = electron.Menu;
-var MenuItem = electron.MenuItem;
-var Tray = electron.Tray;
-var BrowserWindow = electron.BrowserWindow;
-
-var fork = require('child_process').fork;
+const path = require('path');
+const electron = require('electron');
+const app = electron.app;
+const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
+const Tray = electron.Tray;
+const BrowserWindow = electron.BrowserWindow;
+const fork = require('child_process').fork;
 // var shell = require('electron').shell;
-var port = DEFAULT_PORT;
+
+let port = DEFAULT_PORT;
+let editorPath = '';
 
 // var iconPath = {
 //     active: path.resolve(__dirname, '../res/mac-icon.png'),
 //     inactive: path.resolve(__dirname, '../res/mac-icon-gray.png')
 // };
 
-var appIcon = null;
-var server = null;
-var win = null;
-var contextMenu = null;
+let appIcon = null;
+let server = null;
+let win = null;
+let contextMenu = null;
 
 function startServer() {
     server = fork(path.resolve(__dirname, './launch.js'));
-    server.send(`launch ${port}`);
+    server.send(`launch ${port} ${editorPath}`);
 
     // if (appIcon) {
     //     appIcon.setImage(iconPath.active);
@@ -56,15 +57,17 @@ function killServer() {
     }
 }
 
-function sync(newPort) {
-    port = isNaN(newPort) ? DEFAULT_PORT : Number(newPort);
+function sync(newConfig) {
+    port = isNaN(newConfig.port) ? DEFAULT_PORT : Number(newConfig.port);
+    editorPath = newConfig.editorPath;
     killServer();
     startServer();
 }
 
 global.config = {
-    port: port,
-    sync: sync
+    editorPath,
+    port,
+    sync
 };
 
 // available on MacOS only
@@ -78,9 +81,10 @@ app.on('ready', function() {
         show: false,
         width: 250,
         height: 200,
-        closable: false,
+        closable: true,
         minimizable: false,
         resizable: false,
+        vibrancy: 'dark',
         fullscreenable: false
     });
     win.setPosition(900, 25);
@@ -111,7 +115,7 @@ app.on('ready', function() {
         startMenuItem,
         stopMenuItem,
         {
-            label: 'Change port',
+            label: 'Change settings',
             click: function() {
                 win.show();
             }
@@ -126,11 +130,11 @@ app.on('ready', function() {
         }
     ]);
 
-    appIcon.setContextMenu(contextMenu);
+    // appIcon.setContextMenu(contextMenu);
 });
 
 app.on('window-all-closed', function() {
-    if (appIcon) {
-        appIcon.destroy();
-    }
+    // if (appIcon) {
+    //     appIcon.destroy();
+    // }
 });
