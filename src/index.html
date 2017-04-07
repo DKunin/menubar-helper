@@ -2,33 +2,66 @@
 <html>
 <head>
     <style type="text/css">
-    body { padding: 0 10px 5px; font-family: Helvetica, Arial, sans-serif; font-size: 14px; }
-    input { width: 40px; margin: 0 5px; }
+    body { 
+        padding: 0 10px 5px;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        overflow: hidden;
+    }
+    input { 
+        min-width: 150px;
+        padding: 3px;
+        display: inline-block;
+    }
+    label {
+        display: block;
+        white-space: nowrap;
+        padding: 5px 0;
+    }
+    label > span {
+        min-width: 90px;
+        display: inline-block;
+        color: white;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 5px;
+        margin: 10px 0;
+    }
     </style>
 </head>
 <body>
     <form>
-        <label for="port">Port</label>
-        <input class="port" type="number" placeholder="port"/>
-        <input class="editorPath" type="text" placeholder="port"/>
-        <input type="submit" value="Submit"/>
+        <label for="port">
+            <span>Port:</span><input class="port" type="number" placeholder="port"/></label>
+        <label for="port">
+            <span>Editor path:</span><input class="editorPath" type="text" placeholder="editor path"/></label>
+        <button>Save</button>
+        <button class="close-btn" type="button">Close</button>
     </form>
 <script>
-    var remote = require('electron').remote;
-    var port = document.querySelector('.port');
-    var editorPath = document.querySelector('.editorPath');
+    const remote = require('electron').remote;
+    const port = document.querySelector('.port');
+    const editorPath = document.querySelector('.editorPath');
+    const closeBtn = document.querySelector('.close-btn');
+    const config = remote.getGlobal('config');
+    const restartServer = remote.getGlobal('restartServer');
 
-    function onSubmit(e) {
-        var config = remote.getGlobal('config');
-        config.port = port.value;
-        config.editorPath = escape(editorPath.value);
-        config.sync({ port: port.value, editorPath: escape(editorPath.value) });
-        e.preventDefault();
+    function onSubmit(event) {
+        event.preventDefault();
+        config.set({
+            port: port.value,
+            editorPath: escape(editorPath.value)
+        });
+        restartServer(true);
     }
 
-    port.value = remote.getGlobal('config').port;
-    editorPath.value = remote.getGlobal('config').editorPath;
-
+    port.value = config.get('port');
+    editorPath.value = config.get('editorPath');
+    closeBtn.addEventListener('click', () => {
+        restartServer();
+    });
     document.querySelector('form').addEventListener('submit', onSubmit);
 </script>
 

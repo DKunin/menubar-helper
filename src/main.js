@@ -4,17 +4,27 @@ const DEFAULT_PORT = 7288;
 
 const path = require('path');
 const electron = require('electron');
+const Config = require('electron-config');
 const app = electron.app;
 const Menu = electron.Menu;
 const MenuItem = electron.MenuItem;
 const Tray = electron.Tray;
 const BrowserWindow = electron.BrowserWindow;
 const fork = require('child_process').fork;
+
 // var shell = require('electron').shell;
 
 let port = DEFAULT_PORT;
 let editorPath = '';
 
+const config = new Config({
+    defaults: {
+        editorPath,
+        port
+    }
+});
+
+global.config = config;
 // var iconPath = {
 //     active: path.resolve(__dirname, '../res/mac-icon.png'),
 //     inactive: path.resolve(__dirname, '../res/mac-icon-gray.png')
@@ -27,8 +37,7 @@ let contextMenu = null;
 
 function startServer() {
     server = fork(path.resolve(__dirname, './launch.js'));
-    server.send(`launch ${port} ${editorPath}`);
-    console.log(`launch ${port} ${editorPath}`);
+    server.send(`launch ${config.get('port')} ${config.get('editorPath')}`);
     // if (appIcon) {
     //     appIcon.setImage(iconPath.active);
     // }
@@ -57,18 +66,15 @@ function killServer() {
     }
 }
 
-function sync(newConfig) {
-    port = isNaN(newConfig.port) ? DEFAULT_PORT : Number(newConfig.port);
-    editorPath = newConfig.editorPath;
-    killServer();
-    startServer();
+function restartServer(forceRestart) {
+    win.hide();
+    if (forceRestart) {
+        killServer();
+        startServer();
+    }
 }
 
-global.config = {
-    editorPath,
-    port,
-    sync
-};
+global.restartServer = restartServer;
 
 // available on MacOS only
 if (app.dock) {
@@ -77,21 +83,20 @@ if (app.dock) {
 
 app.on('ready', function() {
     win = new BrowserWindow({
-        title: 'Change server port',
+        title: 'Change settings',
         show: false,
-        width: 250,
-        height: 200,
+        width: 350,
+        height: 160,
         closable: false,
         minimizable: false,
-        resizable: false,
-        // vibrancy: 'dark',
+        resizable: true,
+        vibrancy: 'dark',
         fullscreenable: false
     });
     win.setPosition(900, 25);
     win.loadURL('file://' + __dirname + '/index.html');
-
+    // win.webContents.openDevTools();
     // appIcon = new Tray(iconPath.inactive);
-    console.log(path.resolve(__dirname, '../icon.png'));
     appIcon = new Tray(path.resolve(__dirname, '../icon.png'));
 
     startServer();
@@ -131,7 +136,7 @@ app.on('ready', function() {
         }
     ]);
 
-    // appIcon.setContextMenu(contextMenu);
+    appIcon.setContextMenu(contextMenu);
 });
 
 app.on('window-all-closed', function() {
