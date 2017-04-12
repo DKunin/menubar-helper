@@ -5,9 +5,12 @@
 Barebones simple server. 
 
 Install it:
+
 ![screen](./assets/images/screen-0.png)
 
+
 Configure it:
+
 ![screen](./assets/images/screen-1.png)
 ![screen](./assets/images/screen-2.png)
 
