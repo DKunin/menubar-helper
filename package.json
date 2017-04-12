@@ -21,9 +21,8 @@
     "check-style": "eslint ./src",
     "pretty": "prettier ./src/*.js --single-quote --tab-width 4 --write",
     "test": "npm run pretty && npm run check-style",
-    "build-mac": "rm -rf ./build/*darwin*; electron-packager . MenuBarHelper --out=./build --platform=darwin --arch=x64 --version=1.4.11 --icon=./res/logo.icns --overwrite",
-    "build-win": "rm -rf ./build/*win32*; electron-packager . MenuBarHelper --out=./build --platform=win32 --arch=x64 --version=1.4.11 --icon=./res/logo.icns --overwrite",
-    "build": "npm run build-mac",
+    "build": "rm -rf ./build/*darwin*; electron-packager . MenuBarHelper --out=./build --platform=darwin --arch=x64 --icon=./assets/images/icon.icns --overwrite",
+    "package": "create-dmg 'build/MenuBarHelper-darwin-x64/MenuBarHelper.app' && mv ./*.dmg ./build",
     "start": "electron ."
   }
 }
