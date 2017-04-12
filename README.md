@@ -2,7 +2,7 @@
 
 ![icon](./assets/images/icon-128.png)
 
-Barebones simple server. 
+Barebones simple server, to open files in your favorite editor from whereever possible.
 
 Install it:
 
