@@ -5,6 +5,7 @@
 Barebones simple server, to open files in your favorite editor from whereever possible.
 
 Install it:
+[Latest Version](https://github.com/DKunin/menubar-helper/releases)
 
 ![screen](./assets/images/screen-0.png)
 
