@@ -87,7 +87,7 @@ app.on('ready', function() {
         show: false,
         width: 350,
         height: 180,
-        closable: true,
+        closable: false,
         minimizable: false,
         resizable: true,
         vibrancy: 'dark',

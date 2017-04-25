@@ -42,7 +42,15 @@
         <button class="close-btn" type="button">Close</button>
     </form>
 <script>
-    const remote = require('electron').remote;
+    const electron = require('electron');
+    const remote = electron.remote;
+    const { clipboard } = electron;
+    const { Menu, MenuItem } = remote;
+
+    window.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        menu.popup(remote.getCurrentWindow());
+    }, false);
     const port = document.querySelector('.port');
     const editorPath = document.querySelector('.editorPath');
     const closeBtn = document.querySelector('.close-btn');
@@ -50,13 +58,26 @@
     const restartServer = remote.getGlobal('restartServer');
 
     function onSubmit(event) {
-        event.preventDefault();
+        event ? event.preventDefault() : null;
         config.set({
             port: port.value,
             editorPath: escape(editorPath.value)
         });
-        restartServer(true);
+        event ? restartServer(true) : null;
     }
+
+    const menu = new Menu();
+    menu.append(new MenuItem({label: 'paste', click() {
+        editorPath.value = clipboard.readText();
+        onSubmit();
+    }}));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'v' && event.metaKey) {
+            editorPath.value = clipboard.readText();
+            onSubmit();
+        }
+    });
 
     port.value = config.get('port');
     editorPath.value = config.get('editorPath');
