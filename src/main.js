@@ -15,11 +15,11 @@ const fork = require('child_process').fork;
 // var shell = require('electron').shell;
 
 let port = DEFAULT_PORT;
-let editorPath = '';
+let editor = 'sublime';
 
 const config = new Config({
     defaults: {
-        editorPath,
+        editor,
         port
     }
 });
@@ -37,7 +37,7 @@ let contextMenu = null;
 
 function startServer() {
     server = fork(path.resolve(__dirname, './launch.js'));
-    server.send(`launch ${config.get('port')} ${config.get('editorPath')}`);
+    server.send(`launch ${config.get('port')} ${config.get('editor')}`);
     // if (appIcon) {
     //     appIcon.setImage(iconPath.active);
     // }

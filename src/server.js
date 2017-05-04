@@ -1,10 +1,9 @@
 'use strict';
 
 const express = require('express');
-const execa = require('execa');
-const path = require('path');
 const app = express();
-let editorPath = '';
+const openEditor = require('./open-editor');
+let editor = 'sublime';
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -17,15 +16,13 @@ app.use(function(req, res, next) {
 
 app.get('/openeditor', function(req, res) {
     let { options = '' } = req.query;
-    options = options.replace(/\s/g, '\\ ');
-    execa.shell(path.normalize(editorPath) + ' ' + (options ? options : ''))
-        .then(result => res.send(result.stdout))
-        .catch(error => res.send(error));
+    openEditor([ options ], { editor });
+    res.send('ok');
 });
 
 module.exports = {
     app,
-    updatePath: function(newPath) {
-        editorPath = unescape(newPath).replace(/\s/g, '\\ ');
+    updateEditor(newEditor) {
+        editor = newEditor;
     }
 };

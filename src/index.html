@@ -29,61 +29,62 @@
         padding: 5px;
         margin: 10px 0;
     }
+    .editor {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+    }
+    .version {
+        color: white;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 8px;
+    }
     </style>
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/png">
 </head>
 <body>
+    <div class="version"></div>
     <form>
         <label for="port">
-            <span>Port:</span><input class="port" type="number" placeholder="port"/></label>
-        <label for="port">
-            <span>Editor path:</span><input class="editorPath" type="text" placeholder="editor path"/></label>
+            <span>Port:</span><input class="port" type="number" placeholder="port" /></label>
+        <label for="editor">
+            <select value="sublime" id="editor" class="editor">
+                <option value="sublime">Sublime</option>
+                <option value="atom">Atom</option>
+                <option value="vscode">VScode</option>
+                <option value="webstorm">Webstorm</option>
+                <option value="textmate">Textmate</option>
+            </select>
+        </label>
         <button>Save</button>
         <button class="close-btn" type="button">Close</button>
     </form>
 <script>
     const electron = require('electron');
     const remote = electron.remote;
-    const { clipboard } = electron;
-    const { Menu, MenuItem } = remote;
-
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        menu.popup(remote.getCurrentWindow());
-    }, false);
     const port = document.querySelector('.port');
-    const editorPath = document.querySelector('.editorPath');
+    const editor = document.querySelector('.editor');
     const closeBtn = document.querySelector('.close-btn');
+    const versionLabel = document.querySelector('.version');
     const config = remote.getGlobal('config');
     const restartServer = remote.getGlobal('restartServer');
+    const pkg = require('../package.json');
+    versionLabel.innerText = pkg.version;
 
     function onSubmit(event) {
         event ? event.preventDefault() : null;
         config.set({
             port: port.value,
-            editorPath: escape(editorPath.value)
+            editor: editor.value
         });
         event ? restartServer(true) : null;
     }
 
-    const menu = new Menu();
-    menu.append(new MenuItem({label: 'paste', click() {
-        editorPath.value = clipboard.readText();
-        onSubmit();
-    }}));
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'v' && event.metaKey) {
-            editorPath.value = clipboard.readText();
-            onSubmit();
-        }
-    });
-
     port.value = config.get('port');
-    editorPath.value = config.get('editorPath');
-    closeBtn.addEventListener('click', () => {
-        restartServer();
-    });
+    editor.value = config.get('editor');
+    closeBtn.addEventListener('click', restartServer);
     document.querySelector('form').addEventListener('submit', onSubmit);
 </script>
 

@@ -1,6 +1,6 @@
 {
   "name": "menubar-helper",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Simple menubar app to help open files in editor",
   "author": "Dmitri Kunin",
   "license": "MIT",
@@ -8,8 +8,11 @@
   "main": "./src/main.js",
   "dependencies": {
     "electron-config": "0.2.1",
-    "execa": "0.6.3",
-    "express": "4.15.2"
+    "env-editor": "0.1.0",
+    "express": "4.15.2",
+    "line-column-path": "1.0.0",
+    "open-editor": "1.0.1",
+    "opn": "5.0.0"
   },
   "devDependencies": {
     "electron": "^1.4.10",
