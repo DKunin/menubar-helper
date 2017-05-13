@@ -8,10 +8,10 @@
   "main": "./src/main.js",
   "dependencies": {
     "electron-config": "^1.0.0",
-    "env-editor": "^0.1.1",
+    "env-editor": "^0.3.1",
     "express": "4.15.2",
     "line-column-path": "1.0.0",
-    "open-editor": "1.0.1",
+    "open-editor": "^1.1.0",
     "opn": "5.0.0"
   },
   "devDependencies": {
