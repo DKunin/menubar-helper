@@ -2,7 +2,8 @@
 
 const express = require('express');
 const app = express();
-const openEditor = require('./open-editor');
+const openEditor = require('open-editor');
+var exec = require('child_process').spawn;
 let editor = 'sublime';
 
 app.use(function(req, res, next) {
@@ -16,7 +17,13 @@ app.use(function(req, res, next) {
 
 app.get('/openeditor', function(req, res) {
     let { options = '' } = req.query;
-    openEditor([ options ], { editor });
+    const result = openEditor.make([ options ], { editor });
+    let cmd = result.bin;
+    result.args.forEach(singleArg => {
+        cmd += ' "' + singleArg + '"';
+    });
+    console.log(cmd);
+    exec(cmd, console.log);
     res.send('ok');
 });
 
