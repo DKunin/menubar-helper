@@ -3,8 +3,11 @@
 const express = require('express');
 const app = express();
 const openEditor = require('open-editor');
-var exec = require('child_process').spawn;
+var spawn = require('child_process').spawn;
 let editor = 'sublime';
+var fs = require('fs'),
+    out = fs.openSync('./out.log', 'a'),
+    err = fs.openSync('./out.log', 'a');
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -18,12 +21,15 @@ app.use(function(req, res, next) {
 app.get('/openeditor', function(req, res) {
     let { options = '' } = req.query;
     const result = openEditor.make([ options ], { editor });
-    let cmd = result.bin;
+    let cmd = '';
     result.args.forEach(singleArg => {
         cmd += ' "' + singleArg + '"';
     });
-    console.log(cmd);
-    exec(cmd, console.log);
+    spawn(result.bin, result.args, {
+        stdio: [ 'ignore', out, err ],
+        detached: true
+    }).unref();
+    // exec(cmd, console.log);
     res.send('ok');
 });
 
