@@ -10,7 +10,7 @@
     "electron-config": "^1.0.0",
     "env-editor": "^0.3.1",
     "execa": "0.6.3",
-    "express": "4.15.2",
+    "express": "^4.15.3",
     "line-column-path": "1.0.0",
     "open-editor": "1.1.0",
     "opn": "5.0.0"
