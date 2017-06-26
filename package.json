@@ -1,6 +1,6 @@
 {
   "name": "menubar-helper",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Simple menubar app to help open files in editor",
   "author": "Dmitri Kunin",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "execa": "0.6.3",
     "express": "^4.15.3",
     "line-column-path": "1.0.0",
-    "open-editor": "1.1.0",
+    "open-in-editor": "2.2.0",
     "opn": "5.0.0"
   },
   "devDependencies": {
