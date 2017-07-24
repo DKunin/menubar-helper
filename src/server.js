@@ -22,14 +22,8 @@ app.get('/openeditor', function(req, res) {
         },
         () => {}
     );
-    editorFunc.open(options).then(
-        function() {
-            res.sendStatus('Success');
-        },
-        function(err) {
-            res.sendStatus(err);
-        }
-    );
+    editorFunc.open(options);
+    res.send('ok');
 });
 
 module.exports = {

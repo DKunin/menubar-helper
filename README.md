@@ -18,6 +18,7 @@ Barebones simple server, to open files in your favorite editor from whereever po
 ### Select your favorite editor:
 
 - Sublime
+- Vim
 - Atom
 - VScode
 - Webstorm
@@ -32,5 +33,6 @@ Now set your tools (extentions and stuff) to call:
 And it will open your editor on specified line and column.
 
 ###  Changelog
+- 3.0.1 vim support, substituted main opener module
 - 2.0.0 Support for different major editors, no need to fiddle with editor path
 - 1.1.1 Updated tray icon for retina
