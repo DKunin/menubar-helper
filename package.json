@@ -1,6 +1,6 @@
 {
   "name": "menubar-helper",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Simple menubar app to help open files in editor",
   "author": "Dmitri Kunin",
   "license": "MIT",
