@@ -81,7 +81,7 @@ if (app.dock) {
     app.dock.hide();
 }
 
-app.on('ready', function() {
+app.on('ready', function () {
     win = new BrowserWindow({
         title: 'Change settings',
         show: false,
@@ -104,7 +104,7 @@ app.on('ready', function() {
     var startMenuItem = new MenuItem({
         label: 'Start server',
         visible: false,
-        click: function() {
+        click: function () {
             if (!server || server.killed || !server.connected) {
                 startServer();
             }
@@ -113,7 +113,7 @@ app.on('ready', function() {
     var stopMenuItem = new MenuItem({
         label: 'Stop server',
         visible: true,
-        click: function() {
+        click: function () {
             killServer();
         }
     });
@@ -122,13 +122,13 @@ app.on('ready', function() {
         stopMenuItem,
         {
             label: 'Change settings',
-            click: function() {
+            click: function () {
                 win.show();
             }
         },
         {
             label: 'Quit',
-            click: function() {
+            click: function () {
                 killServer();
                 win.setClosable(true);
                 app.quit();
@@ -139,7 +139,7 @@ app.on('ready', function() {
     appIcon.setContextMenu(contextMenu);
 });
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
     if (appIcon) {
         appIcon.destroy();
     }

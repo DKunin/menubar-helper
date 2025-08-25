@@ -8,7 +8,7 @@ let editor = 'sublime';
 
 const vsCodeCmd = '/usr/local/bin/code';
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
         'Access-Control-Allow-Headers',
@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/openeditor', function(req, res) {
+app.get('/openeditor', function (req, res) {
     let { options = '' } = req.query;
 
     const params = { editor };
@@ -27,10 +27,7 @@ app.get('/openeditor', function(req, res) {
         params.cmd = vsCodeCmd;
     }
 
-    const editorFunc = openInEditor.configure(
-        params,
-        () => {}
-    );
+    const editorFunc = openInEditor.configure(params, () => {});
     editorFunc.open(options);
     res.send('ok');
 });

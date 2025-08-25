@@ -3,7 +3,7 @@
 const serverObject = require('./server');
 let server;
 
-process.on('message', message => {
+process.on('message', (message) => {
     let [command, port, editor] = message.split(' ');
 
     if (command === 'launch') {
