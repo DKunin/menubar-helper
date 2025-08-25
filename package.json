@@ -7,6 +7,7 @@
   "repository": "dkunin/menubar-helper",
   "main": "./src/main.js",
   "dependencies": {
+    "create-dmg": "^7.0.0",
     "electron-config": "^2.0.0",
     "express": "^5.1.0",
     "open-in-editor": "^2.2.0"
@@ -15,8 +16,8 @@
     "electron": "^37.3.0",
     "electron-packager": "^17.1.2",
     "eslint": "^8.57.0",
-    "prettier": "^3.6.2",
     "jest": "^30.0.5",
+    "prettier": "^3.6.2",
     "supertest": "^7.1.4"
   },
   "scripts": {
