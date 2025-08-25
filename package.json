@@ -7,22 +7,24 @@
   "repository": "dkunin/menubar-helper",
   "main": "./src/main.js",
   "dependencies": {
-    "electron-config": "^1.0.0",
-    "express": "^4.15.3",
-    "open-in-editor": "2.2.0"
+    "electron-config": "^2.0.0",
+    "express": "^5.1.0",
+    "open-in-editor": "^2.2.0"
   },
   "devDependencies": {
-    "electron": "^2.0.2",
-    "electron-packager": "^12.1.0",
-    "eslint": "^5.1.0",
-    "prettier": "^1.3.1"
+    "electron": "^37.3.0",
+    "electron-packager": "^17.1.2",
+    "eslint": "^8.57.0",
+    "prettier": "^3.6.2",
+    "jest": "^30.0.5",
+    "supertest": "^7.1.4"
   },
   "scripts": {
     "check-style": "eslint ./src",
-    "pretty": "prettier ./src/*.js --single-quote --tab-width 4 --write",
-    "test": "npm run pretty && npm run check-style",
-    "build": "rm -rf ./build/*darwin*; electron-packager . MenuBarHelper --out=./build --platform=darwin --arch=x64 --icon=./assets/images/icon.icns --overwrite",
-    "package": "create-dmg 'build/MenuBarHelper-darwin-x64/MenuBarHelper.app' && mv ./*.dmg ./build",
+    "pretty": "prettier './src/**/*.js' --single-quote --tab-width 4 --trailing-comma none --write",
+    "test": "npm run pretty && npm run check-style && jest",
+    "build": "rm -rf ./build/*darwin*; electron-packager . MenuBarHelper --out=./build --platform=darwin --arch=universal --icon=./assets/images/icon.icns --overwrite",
+    "package": "create-dmg 'build/MenuBarHelper-darwin-universal/MenuBarHelper.app' && mv ./*.dmg ./build",
     "start": "electron ."
   }
 }
