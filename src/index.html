@@ -63,29 +63,28 @@
         <button class="close-btn" type="button">Close</button>
     </form>
 <script>
-    const electron = require('electron');
-    const remote = electron.remote;
     const port = document.querySelector('.port');
     const editor = document.querySelector('.editor');
     const closeBtn = document.querySelector('.close-btn');
     const versionLabel = document.querySelector('.version');
-    const config = remote.getGlobal('config');
-    const restartServer = remote.getGlobal('restartServer');
-    const pkg = require('../package.json');
-    versionLabel.innerText = pkg.version;
+    const { getConfig, setConfig, restartServer, version } = window.electronAPI;
+    versionLabel.innerText = version;
 
     function onSubmit(event) {
         event ? event.preventDefault() : null;
-        config.set({
+        setConfig({
             port: port.value,
             editor: editor.value
         });
         event ? restartServer(true) : null;
     }
 
-    port.value = config.get('port');
-    editor.value = config.get('editor');
-    closeBtn.addEventListener('click', restartServer);
+    getConfig().then(cfg => {
+        port.value = cfg.port;
+        editor.value = cfg.editor;
+    });
+
+    closeBtn.addEventListener('click', () => restartServer());
     document.querySelector('form').addEventListener('submit', onSubmit);
 </script>
 
