@@ -10,6 +10,7 @@ const Menu = electron.Menu;
 const MenuItem = electron.MenuItem;
 const Tray = electron.Tray;
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 const fork = require('child_process').fork;
 
 // var shell = require('electron').shell;
@@ -76,6 +77,19 @@ function restartServer(forceRestart) {
 
 global.restartServer = restartServer;
 
+ipcMain.handle('get-config', () => ({
+    port: config.get('port'),
+    editor: config.get('editor')
+}));
+
+ipcMain.handle('set-config', (event, values) => {
+    config.set(values);
+});
+
+ipcMain.handle('restart-server', (event, forceRestart) => {
+    restartServer(forceRestart);
+});
+
 // available on MacOS only
 if (app.dock) {
     app.dock.hide();
@@ -91,7 +105,12 @@ app.on('ready', function () {
         minimizable: false,
         resizable: true,
         vibrancy: 'dark',
-        fullscreenable: false
+        fullscreenable: false,
+        webPreferences: {
+            preload: path.resolve(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
+        }
     });
     win.setPosition(900, 25);
     win.loadURL('file://' + __dirname + '/index.html');
