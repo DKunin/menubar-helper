@@ -13,7 +13,7 @@
     "open-in-editor": "^2.2.0"
   },
   "devDependencies": {
-    "electron": "^37.3.0",
+    "electron": "^37.3.1",
     "electron-packager": "^17.1.2",
     "eslint": "^8.57.0",
     "jest": "^30.0.5",
